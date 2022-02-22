@@ -7,3 +7,8 @@ class ProdutoNovo(BaseModel):
     categoria: str
     valor: float
 
+class ProdutoEditar(BaseModel):
+    nome: str
+    estoque: int
+    categoria: str
+    valor: float

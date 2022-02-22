@@ -17,6 +17,12 @@ def pegar_todos():
     db.close()
     return produtos
 
+def pegar_produto_por_id(id):
+    db = get_db()
+    produto = db.query(Produto).get(id)
+    db.close()
+    return produto
+
 def remover_pelo_id(id):
     db = get_db()
     resultado = db.query(Produto).filter_by(id=id).delete()
@@ -30,3 +36,10 @@ def remover_todos():
     db.commit()
     db.close()
     return resultado
+
+def editar(id, produto_to_edit):
+    db = get_db()
+    produto = db.query(Produto).filter(Produto.id == id).update(produto_to_edit)
+    db.commit()
+    db.close()
+    return produto

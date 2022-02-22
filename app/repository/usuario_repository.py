@@ -5,7 +5,7 @@ from fastapi.encoders import jsonable_encoder
 
 def criar_usuario(usuario):
     db = get_db()
-    usuario_db = Usuario(**usuario.dict())
+    usuario_db = Usuario(**usuario)
     db.add(usuario_db)
     db.commit()
     db.refresh(usuario_db)
@@ -40,16 +40,7 @@ def remover_todos():
 
 def editar(id, usuario_to_edit):
     db = get_db()
-    usuario = db.query(Usuario).get(id)
-
-    usuario_db = jsonable_encoder(usuario)
-    usuario_to_edit_data = usuario_to_edit.dict()
-    for campo in usuario_db:
-        if campo in usuario_to_edit_data.keys():
-            setattr(usuario, campo, usuario_to_edit_data[campo])
-
-    db.add(usuario)
+    usuario = db.query(Usuario).filter(Usuario.id == id).update(usuario_to_edit)
     db.commit()
-    db.refresh(usuario)
     db.close()
     return usuario
